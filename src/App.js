@@ -28,7 +28,7 @@ const App = () => {
     return (
         <div className={styles.container}>
             <div>
-                <h1>COVID-19</h1>
+                <h1>COVID-19（コロナ情報）</h1>
             </div>
             <Cards data={data}/>
             <CountryPicker handleChangeCountry={handleChangeCountry}/>
