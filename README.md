@@ -1,5 +1,13 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## このアプリについて
+
+このアプリは以下の動画を参考に、Webアプリケーション開発、React学習の一環で作成しました。
+
+* [Build a COVID-19 Tracker Application - React JS Project (Hooks, Material UI, Charts js)](https://www.youtube.com/watch?v=khJlrj3Y6Ls&t=2689s)
+
+動画で紹介されているアプリケーションをベースに、勉強がてら、いろいろ改良していきます。
+
 ## Available Scripts
 
 In the project directory, you can run:
