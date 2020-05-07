@@ -30,7 +30,7 @@ const App = () => {
         <div>
             <Header language={language} handleChangeLanguage={setLanguage}/>
             <div className={styles.container}>
-                <Cards data={data}/>
+                <Cards data={data} language={language}/>
                 <CountryPicker handleChangeCountry={handleChangeCountry}/>
                 <Chart data={data} country={country}/>
             </div>            
