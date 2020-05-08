@@ -31,7 +31,7 @@ const LanguageSelector = ({ language, handleChangeLanguage }) => {
                 anchorEl={anchorEl}
                 keepMounted
                 open={Boolean(anchorEl)}
-                onClose={handleClose}
+                onClose={() => handleClose(language)}
                 PaperProps={{
                     style: {
                         width: '180px',
