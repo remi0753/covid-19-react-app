@@ -1,0 +1,9 @@
+.card {
+    margin: 0 2% 20px !important;
+}
+
+@media (max-width: 770px) {
+    .card {
+        margin: 2% 0 !important;
+    }
+}

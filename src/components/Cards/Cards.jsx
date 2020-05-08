@@ -1,11 +1,10 @@
 import React from 'react';
-import { Card, CardContent, Typography, Grid } from '@material-ui/core';
-import CountUp from 'react-countup';
-import cx from 'classnames';
+import { Grid } from '@material-ui/core';
 
 import styles from './Cards.module.css';
 import sentences from './Sentences';
 import DateFormatter from './DateFormatter';
+import MyCard from '../MyCard/MyCard';
 
 const Cards = ({ data: { confirmed, recovered, deaths, lastUpdate }, language }) => {
     if(!confirmed) {
@@ -13,42 +12,22 @@ const Cards = ({ data: { confirmed, recovered, deaths, lastUpdate }, language })
     }
 
     const date = DateFormatter(language, lastUpdate);
-
-    const drawSentences = sentences[language];
+    const translatedSentences = sentences[language];
+    const value = {
+        infectedTotal: confirmed,
+        recovered,
+        deaths,
+        infectedCurrent: {
+            value: confirmed.value - recovered.value - deaths.value,
+        },
+    };
 
     return (
         <div className={styles.container}>
-            <Grid container spacing={3} justify="center">
-                <Grid item component={Card} xs={12} md={3} className={cx(styles.card, styles.infected)}>
-                    <CardContent>
-                        <Typography color="textSecondary" gutterBottom>{drawSentences.Infected}</Typography>
-                        <Typography variant='h5'>
-                            <CountUp start={0} end={confirmed.value} duration={2.5} separator="," />
-                        </Typography>
-                        <Typography color="textSecondary">{date}</Typography>
-                        <Typography variant="body2">{drawSentences.InfectedComment}</Typography>
-                    </CardContent>
-                </Grid>
-                <Grid item component={Card} xs={12} md={3} className={cx(styles.card, styles.recovered)}>
-                    <CardContent>
-                        <Typography color="textSecondary" gutterBottom>{drawSentences.Recovered}</Typography>
-                        <Typography variant='h5'>
-                            <CountUp start={0} end={recovered.value} duration={2.5} separator="," />
-                        </Typography>
-                        <Typography color="textSecondary">{date}</Typography>
-                        <Typography variant="body2">{drawSentences.RecoveredComment}</Typography>
-                    </CardContent>
-                </Grid>
-                <Grid item component={Card} xs={12} md={3} className={cx(styles.card, styles.deaths)}>
-                    <CardContent>
-                        <Typography color="textSecondary" gutterBottom>{drawSentences.Deaths}</Typography>
-                        <Typography variant='h5'>
-                            <CountUp start={0} end={deaths.value} duration={2.5} separator="," />   
-                        </Typography>
-                        <Typography color="textSecondary">{date}</Typography>
-                        <Typography variant="body2">{drawSentences.DeathsComment}</Typography>
-                    </CardContent>
-                </Grid>
+            <Grid container spacing={1} justify="center">
+                {Object.keys(translatedSentences).map((key, i) => (
+                    <MyCard key={i} sentences={ translatedSentences[key] } value={value[key].value} date={date} style={styles[key]} />  
+                ))}
             </Grid>
         </div>
     );
