@@ -3,8 +3,9 @@ import { fetchDailyData } from '../../api';
 import { Line, Bar } from 'react-chartjs-2';
 
 import styles from './Chart.module.css';
+import sentences from './Sentences';
 
-const Chart = ({ data: { confirmed, recovered, deaths }, country }) => {
+const Chart = ({ data: { confirmed, recovered, deaths }, country: { country, draw }, language }) => {
     const [dailyData, setDailyData] = useState([]);
 
     useEffect(() => {
@@ -15,6 +16,8 @@ const Chart = ({ data: { confirmed, recovered, deaths }, country }) => {
         fetchAPI();
     }, []);
 
+    const drawSentences = sentences[language];
+
     const lineChart = (
         dailyData.length ? (
             <Line 
@@ -22,12 +25,12 @@ const Chart = ({ data: { confirmed, recovered, deaths }, country }) => {
                     labels: dailyData.map(({ date }) => date),
                     datasets: [{
                         data: dailyData.map(({ confirmed }) => confirmed),
-                        label: 'Infected',
+                        label: drawSentences.Infected,
                         borderColor: '#3333ff',
                         fill: true,
                     }, {
                         data: dailyData.map(({ deaths }) => deaths),
-                        label: 'Deaths',
+                        label: drawSentences.Deaths,
                         borderColor: 'red',
                         backgroundColor: 'rgba(255, 0, 0, 0.5)',
                         fill: true,
@@ -41,7 +44,7 @@ const Chart = ({ data: { confirmed, recovered, deaths }, country }) => {
         confirmed ? (
             <Bar 
                 data={{
-                    labels: ['Infected', 'Recoverd', 'Deaths'],
+                    labels: [drawSentences.Infected, drawSentences.Recovered, drawSentences.Deaths],
                     datasets: [{
                         label: 'People',
                         backgroundColor: [
@@ -54,7 +57,7 @@ const Chart = ({ data: { confirmed, recovered, deaths }, country }) => {
                 }}
                 options={{
                     legend: { display: false },
-                    title: { display: true, text: `Current state in ${country}`}
+                    title: { display: true, text: draw },
                 }}
             />
         ) : null
