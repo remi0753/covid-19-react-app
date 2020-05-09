@@ -20,7 +20,7 @@ const sentences = {
     },
     eng: {
         infectedTotal: {
-            title: 'Infected (Total)',
+            title: 'Infected',
             comment: 'Total number of infections of COVID-19',
 
         },
@@ -33,7 +33,7 @@ const sentences = {
             comment: 'Number of deaths caused by COVID-19',
         },
         infectedCurrent: {
-            title: 'Infected (Current)',
+            title: 'Active',
             comment: 'Current number of living infections of COVID-19',
         },
     },
