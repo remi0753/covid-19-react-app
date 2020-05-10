@@ -1,6 +1,6 @@
 const sentences = {
     jpn: {
-        infectedTotal: {
+        confirmed: {
             title: '感染者数（累計）',
             comment: 'これまでにコロナに感染した累計人数',
 
@@ -13,13 +13,13 @@ const sentences = {
             title: '死亡者数',
             comment: 'これまでにコロナに感染し死亡した人数',
         },
-        infectedCurrent: {
+        active: {
             title: '感染者数（現在）',
             comment: '現在生存するコロナ感染者数',
         },
     },
     eng: {
-        infectedTotal: {
+        confirmed: {
             title: 'Infected',
             comment: 'Total number of infections of COVID-19',
 
@@ -32,7 +32,7 @@ const sentences = {
             title: 'Deaths',
             comment: 'Number of deaths caused by COVID-19',
         },
-        infectedCurrent: {
+        active: {
             title: 'Active',
             comment: 'Current number of living infections of COVID-19',
         },

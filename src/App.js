@@ -2,49 +2,36 @@ import React, { useEffect, useState } from 'react';
 
 import { Cards, Chart, CountryPicker, Header } from './components';
 import styles from './App.module.css';
-import { fetchData, fetchAllData } from './api';
-import CountryData from './components/Data/CountryData';
+import { fetchAllData } from './api';
 
 const App = () => {
-    const [data, setData] = useState({});
-    const [country, setCountry] = useState({ country: '', draw: '', iso3: '' });
+    const [country, setCountry] = useState('Global');
     const [language, setLanguage] = useState('eng');
-    const [allData, setAllData] = useState([]);
+    const [allData, setAllData] = useState([{ countries: null, date: '' }]);
+    const [lastUpdate, setLastUpdate] = useState('');
 
     useEffect(() => {
         const fetchAPI = async () => {
-            const fetchedData = await fetchData();
             const fetchedAllData = await fetchAllData();
-  
-            setData(fetchedData);
+
+            setLastUpdate(fetchedAllData[fetchedAllData.length - 1].date);
             setAllData(fetchedAllData);
         };
 
         fetchAPI();
     }, []);
 
-    const handleChangeCountry = async ({ country, draw, iso3 }) => {
-        const fetchedData = await fetchData(country);
-
-        setCountry({ country, draw, iso3 });
-        setData(fetchedData);
-    };
-
-    const handleChangeLanguage = (lang) => {
-        const searchIso3 = country.iso3;
-        const foundCountry = searchIso3 ? CountryData.find(({ iso3 }) => iso3 === searchIso3) : null;
-        setCountry({...country, draw: foundCountry ? foundCountry.name[lang] : country.country });
-        setLanguage(lang);
-    }
+    const displayCardData = allData.length ? allData[allData.length - 1] : allData[0];
+    const allCountries = allData[0].countries ? Object.keys(allData[allData.length - 1].countries) : [];
 
     return (
         <div>
-            <Header language={language} handleChangeLanguage={handleChangeLanguage}/>
+            <Header language={language} handleChangeLanguage={setLanguage}/>
             <div className={styles.container}>
-                <Cards data={data} data1={allData.length ? allData[allData.length - 1] : null} language={language}/>
-                <CountryPicker handleChangeCountry={handleChangeCountry} language={language}/>
-                <Chart data={data} country={country} language={language}/>
-            </div>            
+                <CountryPicker handleChangeCountry={setCountry} countries={allCountries} language={language}/>
+                <Cards data={displayCardData} language={language} country={country}/>
+                <Chart allData={allData} country={country} language={language} lastUpdate={lastUpdate}/>
+            </div>
         </div>
     );
 }

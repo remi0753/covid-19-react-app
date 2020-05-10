@@ -1,11 +1,23 @@
 .container {
     display: flex;
     justify-content: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     width: 85%;
+}
+.formControl {
+    width: 30%;
+    margin: 30px 0 10px !important;
 }
 
 @media (max-width: 770px) {
     .container {
         width: 100%;
+    }
+
+    .formControl {
+        width: 70%;
+        margin: 30px 0 10px !important;
     }
 }

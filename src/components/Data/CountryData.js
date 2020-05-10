@@ -2242,12 +2242,21 @@ const rawData = [
     },
 ];
 
-const CountryData = rawData.map(({ companyjp, companyen, alpha3 }) => ({
-    name: {
-        jpn: companyjp,
-        eng: companyen,
+const CountryData = [
+    ...rawData.map(({ companyjp, companyen, alpha3 }) => ({
+        name: {
+            jpn: companyjp,
+            eng: companyen,
+        },
+        iso3: alpha3,
+    })),
+    {
+        name: {
+            jpn: '全世界',
+            eng: 'Global',
+        },
+        iso3: 'GLB',
     },
-    iso3: alpha3,
-}));
+];
 
 export default CountryData;

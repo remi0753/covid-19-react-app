@@ -1,13 +1,17 @@
 const sentences = {
     jpn: {
-        Infected: '感染者数',
-        Recovered: '回復者数',
-        Deaths: '死亡者数',
+        confirmed: '感染者数（累計）',
+        recovered: '回復者数',
+        deaths: '死亡者数',
+        active: '感染者数（現在）',
+        barLabel: '人数',
     },
     eng: {
-        Infected: 'Infected',
-        Recovered: 'Recovered',
-        Deaths: 'Deaths',
+        confirmed: 'Infected',
+        recovered: 'Recovered',
+        deaths: 'Deaths',
+        active: 'Active',
+        barLabel: 'People',
     },
 };
 

@@ -29,7 +29,8 @@ const toJpnDateString = (date) => {
 }
 
 const DateFormatter = (lang, date) => {
-    const drawDate = new Date(date);
+    const [ , month, day] = date.split('-')
+    const drawDate = new Date(2020, Number.parseInt(month) - 1, Number.parseInt(day));
 
     switch (lang) {
         case 'eng':

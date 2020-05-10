@@ -4,6 +4,7 @@ const URL = 'https://covid19.mathdro.id/api';
 const confirmedCsvUrl = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv';
 const recoveredCsvUrl = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv';
 const deathsCsvUrl = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv';
+const isoTableUrl = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv';
 
 export const fetchData = async (country) => {
     const changeableURL = country ? `${URL}/countries/${country}` : URL;
@@ -44,45 +45,45 @@ export const fetchCountries = async () => {
     }
 }
 
-const generateData = async (url) => {
-    return (await axios.get(url))
-        //改行区切りのデータに
-        .data.split('\n')
-        //それぞれをカンマで区切る
-        .map((row) => row.split(','))
-        //緯度経度と地方情報を省く
-        .map((row) => row.filter((_, index) => index === 1 || index > 3))
-        //数字をNumber型に変換
-        .map((row, rowIndex) => row.map((data, dataIndex) => (rowIndex !== 0 && dataIndex !== 0) ? Number.parseInt(data) : data))
-        //重複国データをまとめる
-        .reduce((accum, row) => {
-            if (accum.find((accumRow) => accumRow[0] === row[0])) {
-                const value = accum.map((accumRow) => 
-                    accumRow[0] === row[0] ? 
-                    accumRow.map((rowData, i) => i === 0 ? rowData : rowData + row[i]) :
-                    accumRow
-                );
-                return value;
-            } else {
-                return [...accum, row];
-            }
-        }, []);
-};
-
-const generateGlobalData = (table, date) => {
-    return table
-        .filter((_, i) => i !== 0 || i === table.length - 1)
-        .reduce((accum, row) => {
-            if (row.length !== 0) {
-                const r = row.filter((_, i) => i !== 0)[date] + accum;
-                return r;
-            } else {
-                return accum; 
-            }
-        }, 0);
-};
-
 export const fetchAllData = async () => {
+    const generateData = async (url) => {
+        return (await axios.get(url))
+            //改行区切りのデータに
+            .data.split('\n')
+            //それぞれをカンマで区切る
+            .map((row) => row.split(','))
+            //緯度経度と地方情報を省く
+            .map((row) => row.filter((_, index) => index === 1 || index > 3))
+            //数字をNumber型に変換
+            .map((row, rowIndex) => row.map((data, dataIndex) => (rowIndex !== 0 && dataIndex !== 0) ? Number.parseInt(data) : data))
+            //重複国データをまとめる
+            .reduce((accum, row) => {
+                if (accum.find((accumRow) => accumRow[0] === row[0])) {
+                    const value = accum.map((accumRow) => 
+                        accumRow[0] === row[0] ? 
+                        accumRow.map((rowData, i) => i === 0 ? rowData : rowData + row[i]) :
+                        accumRow
+                    );
+                    return value;
+                } else {
+                    return [...accum, row];
+                }
+            }, []);
+    };
+    
+    const generateGlobalData = (table, date) => {
+        return table
+            .filter((_, i) => i !== 0 || i === table.length - 1)
+            .reduce((accum, row) => {
+                if (row.length !== 0) {
+                    const r = row.filter((_, i) => i !== 0)[date] + accum;
+                    return r;
+                } else {
+                    return accum; 
+                }
+            }, 0);
+    };
+
     //csv to obj
     const confirmedTable = await generateData(confirmedCsvUrl);      
     const recoveredTable = await generateData(recoveredCsvUrl); 
@@ -118,7 +119,7 @@ export const fetchAllData = async () => {
                 date: fixedDate,
                 countries: {
                     ...countries,
-                    global: {
+                    Global: {
                         confirmed,
                         recovered,
                         deaths,
@@ -130,3 +131,16 @@ export const fetchAllData = async () => {
 
     return countries;
 };
+
+export const fetchIsoTable = async () => {       
+    const isoDataTable = (await axios.get(isoTableUrl))
+        .data.split('\n')
+        .map((row) => row.split(','))
+        .filter((row) => row[6] === '')
+        .map((row) => row.filter((_, i) => i === 2 || i === 7));
+
+    return [
+        ...isoDataTable,
+        ["GLB", "Global"],
+    ];
+}

@@ -4,43 +4,39 @@ import { NativeSelect, FormControl } from '@material-ui/core';
 import styles from './CountryPicker.module.css';
 import CountryData from '../Data/CountryData';
 
-import { fetchCountries } from '../../api';
+import { fetchIsoTable } from '../../api';
 
-const CountryPicker = ({ handleChangeCountry, language }) => {
-    const [fetchedCountries, setFetchedCountries] = useState([]);
+const CountryPicker = ({ handleChangeCountry, language, countries }) => {
+    const [isoTable, setIsoTable] = useState([]);
+    const [selectedCountry, setSelectedCountry] = useState('Global');
 
     useEffect(() => {
         const fetchAPI = async () => {
-            setFetchedCountries(await fetchCountries());
+            setIsoTable(await fetchIsoTable());
         };
 
         fetchAPI();
-    }, [setFetchedCountries]);
+    }, []);
 
-    const handleSelectCountry = (value) => {
-        const data = value.split('/');
-        handleChangeCountry({ country: data[0], draw: data[1], iso3: data[2] });
+    const handleSelectCountry = (country) => {
+        setSelectedCountry(country);
+        handleChangeCountry(country);
     };
-
-    const global = language === 'eng' ? 'Global' : '全世界';
 
     return (
         <FormControl className={styles.formControl}>
-            <NativeSelect defaultValue="" onChange={(event) => handleSelectCountry(event.target.value)}>
-                <option value={'/' + global + '/'}>{global}</option>
-                {fetchedCountries.map(({ name, iso3 }, i) => {
-                    let drawName = name;
-                    let value;
+            <NativeSelect value={selectedCountry} onChange={(event) => handleSelectCountry(event.target.value)}>
+                {countries.map((country, i) => {
+                    const searchedDataFromTable = isoTable.find((data) => data[1] === country);
+                    const iso3 = searchedDataFromTable ? searchedDataFromTable[0] : '';
+                    let displayName = country;
 
                     if (iso3) {
-                        const country = CountryData.find((c) => (c.iso3 === iso3));
-                        drawName = country ? country.name[language] : name;
-                        value = country ? (name + '/' + drawName + '/' + iso3) : (name + '/' + name + '/' + iso3);
-                    } else {
-                        value = name + '/' + name + '/';
+                        const searchedDataFromCountry = CountryData.find((c) => (c.iso3 === iso3));
+                        displayName = searchedDataFromCountry ? searchedDataFromCountry.name[language] : country;
                     }
 
-                    return (<option key={i} value={value}>{drawName}</option>);
+                    return (<option key={i} value={country}>{displayName}</option>);
                 })}
             </NativeSelect>
         </FormControl>
