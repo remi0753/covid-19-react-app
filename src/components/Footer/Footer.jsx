@@ -7,7 +7,7 @@ import sentences from './Sentences';
 const Copyright = () => {
     return (
         <Typography variant="body2" color="textSecondary">
-            {'Copyright @ '}
+            {'Copyright @'}
             <Link color="inherit" href="https://github.com/remi0753/">
                 Remi
             </Link>{' '}
