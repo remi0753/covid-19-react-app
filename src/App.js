@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Cards, Chart, CountryPicker, Header } from './components';
+import { Cards, Chart, CountryPicker, Header, Footer } from './components';
 import styles from './App.module.css';
 import { fetchAllData } from './api';
 
@@ -32,6 +32,7 @@ const App = () => {
                 <Cards data={displayCardData} language={language} country={country}/>
                 <Chart allData={allData} country={country} language={language} lastUpdate={lastUpdate}/>
             </div>
+            <Footer language={language}/>
         </div>
     );
 }
