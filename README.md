@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# COVID-19 React App
 
 ## このアプリについて
 
@@ -8,6 +8,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 動画で紹介されているアプリケーションをベースに、勉強がてら、いろいろ改良していきます。
 
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 ## Data sources
 
 * [COVID-19 Data Repository by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University](https://github.com/CSSEGISandData/COVID-19)
