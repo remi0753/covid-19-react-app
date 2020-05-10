@@ -1,49 +1,9 @@
 import axios from 'axios';
 
-const URL = 'https://covid19.mathdro.id/api';
 const confirmedCsvUrl = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv';
 const recoveredCsvUrl = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv';
 const deathsCsvUrl = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv';
 const isoTableUrl = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv';
-
-export const fetchData = async (country) => {
-    const changeableURL = country ? `${URL}/countries/${country}` : URL;
-    try {
-        const { data: { confirmed, recovered, deaths, lastUpdate }} = await axios.get(changeableURL);
-
-        return { confirmed, recovered, deaths, lastUpdate };
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-export const fetchDailyData = async () => {
-    try {
-        const { data } = await axios.get(`${URL}/daily`);
-
-        //console.log(data);
-        const modifiedData = data.map((dailyData) => ({
-            confirmed: dailyData.confirmed.total,
-            deaths: dailyData.deaths.total,
-            recovered: dailyData.recovered.total,
-            date: dailyData.reportDate,
-        }));
-
-        return modifiedData;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-export const fetchCountries = async () => {
-    try {
-        const { data: { countries }} = await axios.get(`${URL}/countries`);
-
-        return countries.map((country) => ({ name: country.name, iso3: country.iso3 }));
-    } catch (error) {
-        console.log(error);
-    }
-}
 
 export const fetchAllData = async () => {
     const generateData = async (url) => {

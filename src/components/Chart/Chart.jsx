@@ -13,7 +13,7 @@ const Chart = ({ allData, country, language, lastUpdate }) => {
     }, [lastUpdate]);
 
     if (!allData[0].countries) {
-        return 'Loading ...';
+        return '';
     }
 
     const { 
